@@ -1,3 +1,4 @@
-using Test, RingLists
+using Test
+using RingLists
 
 @test true
