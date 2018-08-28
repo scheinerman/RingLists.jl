@@ -1,2 +1,2 @@
-# RingLists.jl
+# RingLists
 Circular lists
