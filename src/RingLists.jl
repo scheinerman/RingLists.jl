@@ -1,6 +1,8 @@
 module RingLists
 export RingList
 
+import Base: ==, length
+
 struct RingList{T}
     data::Dict{T,T}
 end
@@ -35,10 +37,13 @@ function RingList(x...)
     return RingList(collect(x))
 end
 
-function RingList{T}() where T 
+function RingList{T}() where T
     d = Dict{T,T}()
     return RingList(d)
 end
+
+==(a::RingList,b::RingList) = a.data == b.data
+length(a::RingList) = length(a.data)
 
 # greet() = print("Hello World!")
 
