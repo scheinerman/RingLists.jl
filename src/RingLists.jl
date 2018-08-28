@@ -1,7 +1,7 @@
 module RingLists
 export RingList
 
-import Base: ==, length, getindex, keys
+import Base: ==, length, getindex, keys, haskey, insert!
 
 struct RingList{T}
     data::Dict{T,T}
@@ -56,6 +56,31 @@ end
 length(a::RingList) = length(a.data)
 keys(a::RingList) = keys(a.data)
 getindex(a::RingList, x) = a.data[x]
+haskey(a::RingList) = haskey(a.data)
+
+
+function insert!(a::RingList{T},x::T) where T
+    if length(a) == 0
+        a.data[x] = x
+        return nothing
+    end
+    if haskey(a,x)
+        error("$x already in this RingList")
+    end
+    y = first(keys(a))  # get the other elements
+    if length(a) == 1
+        a[x] = y
+        a[y] = x
+        return nothing
+    end
+    z = a[y]
+    a[y] = x
+    a[x] = z
+    nothing
+end
+
+
+
 
 
 end # module
