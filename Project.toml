@@ -1,0 +1,6 @@
+authors = ["Ed Scheinerman <ers@jhu.edu>"]
+name = "RingLists"
+uuid = "bce44b84-aab8-11e8-13f2-cdbcb22d90d7"
+version = "0.1.0"
+
+[deps]
