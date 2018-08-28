@@ -1,0 +1,2 @@
+# RingLists.jl
+Circular lists
