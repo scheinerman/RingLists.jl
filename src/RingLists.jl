@@ -1,7 +1,8 @@
 module RingLists
 export RingList
 
-import Base: ==, length, getindex, keys, haskey, insert!
+import Base: ==, length, getindex, keys, haskey, insert!, eltype
+import Base: Vector, show
 
 struct RingList{T}
     data::Dict{T,T}
@@ -56,7 +57,8 @@ end
 length(a::RingList) = length(a.data)
 keys(a::RingList) = keys(a.data)
 getindex(a::RingList, x) = a.data[x]
-haskey(a::RingList) = haskey(a.data)
+haskey(a::RingList,x) = haskey(a.data,x)
+eltype(a::RingList{T}) where T = T
 
 
 function insert!(a::RingList{T},x::T) where T
@@ -69,18 +71,52 @@ function insert!(a::RingList{T},x::T) where T
     end
     y = first(keys(a))  # get the other elements
     if length(a) == 1
-        a[x] = y
-        a[y] = x
+        a.data[x] = y
+        a.data[y] = x
         return nothing
     end
     z = a[y]
-    a[y] = x
-    a[x] = z
+    a.data[y] = x
+    a.data[x] = z
     nothing
 end
 
+function Vector(a::RingList{T}) where T
+    n = length(a)
+    if n == 0
+        return T[]
+    end
+    K = keys(a)
+    result = Vector{T}(undef,n)
+    try
+        result[1] = minimum(K)
+    catch
+        result[1] = first(K)
+    end
+
+    i = 1
+    while i<n
+        i += 1
+        result[i] = a[result[i-1]]
+    end
+
+    return result
+end
 
 
+function show(io::IO, a::RingList{T}) where T
+    v = Vector(a)
+    result = "RingList{T}("
+    n = length(a)
+    for i=1:n
+        result *= "$(v[i])"
+        if i<n
+            result *= ","
+        end
+    end
+    result *= ")"
+    print(io, result)
+end
 
 
 end # module
