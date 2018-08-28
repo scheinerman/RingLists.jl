@@ -2,7 +2,7 @@ module RingLists
 export RingList, insertafter!
 
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
-import Base: Vector, show, hash
+import Base: Vector, show, hash, reverse
 
 struct RingList{T}
     data::Dict{T,T}
@@ -25,6 +25,9 @@ end
 function RingList(vals::Vector{T}) where T
     d = Dict{T,T}()
     n = length(vals)
+    if n != length(unique(vals))  # check there are no repeats
+        error("List of values may not have a repeat")
+    end
     if n == 0
         return RingList(d)
     end
@@ -60,7 +63,11 @@ getindex(a::RingList, x) = a.data[x]
 haskey(a::RingList,x) = haskey(a.data,x)
 eltype(a::RingList{T}) where T = T
 
-
+"""
+`insert!(a,x)` adds the element `x` into `a`.
+No guarantee where it will go. See also
+`insertafter!`
+"""
 function insert!(a::RingList{T},x::T) where T
     if length(a) == 0
         a.data[x] = x
@@ -122,6 +129,8 @@ function Vector(a::RingList{T}) where T
 
     return result
 end
+
+reverse(a::RingList) = RingList(reverse(Vector(a)))
 
 
 function show(io::IO, a::RingList{T}) where T
