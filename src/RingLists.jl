@@ -1,12 +1,22 @@
 module RingLists
 export RingList
 
-import Base: ==, length
+import Base: ==, length, getindex, keys
 
 struct RingList{T}
     data::Dict{T,T}
 end
 
+"""
+`RingList{T}()` creates a new, empty `RingList` holding elements of type `T`.
+Example: `RingList{Int}()`.
+
+`RingList(list)` creates a new `RingList` from the elements in the
+one-dimensional array `list`. Example: `RingList([1,2,3])`.
+
+`RingList(x...)` creates a new `RingList` from the arguments.
+Example: `RingList(1,2,3)`.
+"""
 function RingList(T::Type=Any)
     return RingList(Dict{T,T}())
 end
@@ -44,7 +54,8 @@ end
 
 ==(a::RingList,b::RingList) = a.data == b.data
 length(a::RingList) = length(a.data)
+keys(a::RingList) = keys(a.data)
+getindex(a::RingList, x) = a.data[x]
 
-# greet() = print("Hello World!")
 
 end # module
