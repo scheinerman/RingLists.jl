@@ -1,8 +1,8 @@
 module RingLists
-export RingList
+export RingList, insertafter!
 
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
-import Base: Vector, show
+import Base: Vector, show, hash
 
 struct RingList{T}
     data::Dict{T,T}
@@ -81,6 +81,26 @@ function insert!(a::RingList{T},x::T) where T
     nothing
 end
 
+"""
+`insertafter!(a::RingList,x,y)` inserts `x` into `a` after `y`.
+"""
+function insertafter!(a::RingList, x, y)
+    if haskey(a,x)
+        error("Element $x alread in this RingList")
+    end
+    if !haskey(a,y)
+        error("Element $y not in this RingList, cannot insert after")
+    end
+    # who is currently after y?
+    z = a[y]
+    # point y to x
+    a.data[y] = x
+    # and point x to z
+    a.data[x] = z
+    nothing
+end
+
+
 function Vector(a::RingList{T}) where T
     n = length(a)
     if n == 0
@@ -106,7 +126,7 @@ end
 
 function show(io::IO, a::RingList{T}) where T
     v = Vector(a)
-    result = "RingList{T}("
+    result = "RingList{$T}("
     n = length(a)
     for i=1:n
         result *= "$(v[i])"
@@ -117,6 +137,9 @@ function show(io::IO, a::RingList{T}) where T
     result *= ")"
     print(io, result)
 end
+
+hash(a::RingList) = hash(a.data)
+hash(a::RingList, h::UInt64) = hash(a.data, h)
 
 
 end # module
