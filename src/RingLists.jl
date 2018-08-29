@@ -104,6 +104,7 @@ No guarantee where it will go. See also
 function insert!(a::RingList{T},x::T) where T
     if length(a) == 0
         a.data[x] = x
+        a.revdata[x] = x
         return nothing
     end
     if haskey(a,x)
@@ -113,11 +114,18 @@ function insert!(a::RingList{T},x::T) where T
     if length(a) == 1
         a.data[x] = y
         a.data[y] = x
+        a.revdata[x] = y
+        a.revdata[y] = x
         return nothing
     end
+    # y-->z   becomes y --> x --> z
     z = a[y]
     a.data[y] = x
     a.data[x] = z
+
+    a.revdata[z] = x
+    a.revdata[x] = y
+
     nothing
 end
 
@@ -133,10 +141,15 @@ function insertafter!(a::RingList, x, y)
     end
     # who is currently after y?
     z = a[y]
-    # point y to x
+    # we have y --> z
+    # and change to y --> x --> z
+
     a.data[y] = x
-    # and point x to z
     a.data[x] = z
+
+    a.revdata[x] = y
+    a.revdata[z] = x
+
     nothing
 end
 
@@ -152,10 +165,13 @@ function delete!(a,x)
         return
     end
 
+    # prev --> x --> next
     next = a[x]
-    prev = reverse(a)[x]
+    prev = previous(a,x)
     delete!(a.data,x)
+    delete!(a.revdata,x)
     a.data[prev] = next
+    a.revdata[next] = prev
     return
 end
 

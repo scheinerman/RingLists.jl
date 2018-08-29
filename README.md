@@ -35,7 +35,7 @@ the elements in `a`.
 return the smallest value held in `a`. Fails if `a` is empty.
 * `insert!(a,x)` inserts the element `a` into the `RingList`. No guarantee where it will end up.
 * `delete!(a,x)` removes `x` from the collection linking together its
-predecessor and successor. **Note**: This is an expensive operation.
+predecessor and successor.
 * `insertafter!(a,x,y)` inserts `x` into `a` after `y`. For example:
 
 ```julia
