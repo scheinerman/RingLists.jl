@@ -6,6 +6,7 @@ import Base: Vector, show, hash, reverse, first, delete!, Set
 
 struct RingList{T}
     data::Dict{T,T}
+    revdata::Dict{T,T}
 end
 
 """
@@ -19,7 +20,16 @@ one-dimensional array `list`. Example: `RingList([1,2,3])`.
 Example: `RingList(1,2,3)`.
 """
 function RingList(T::Type=Any)
-    return RingList(Dict{T,T}())
+    return RingList(Dict{T,T}(),Dict{T,T}())
+end
+
+function _rev(d::Dict{T,T}) where T
+    rd = Dict{T,T}()
+    for k in keys(d)
+        v = d[k]
+        rd[v] = k
+    end
+    return rd
 end
 
 function RingList(vals::Vector{T}) where T
@@ -29,12 +39,12 @@ function RingList(vals::Vector{T}) where T
         error("List of values may not have a repeat")
     end
     if n == 0
-        return RingList(d)
+        return RingList(d,_rev(d))
     end
     if n==1
         a = vals[1]
         d[a] = a
-        return RingList(d)
+        return RingList(d,_rev(d))
     end
     for i=1:n-1
         a = vals[i]
@@ -44,7 +54,7 @@ function RingList(vals::Vector{T}) where T
     a = vals[end]
     b = vals[1]
     d[a] = b
-    return RingList(d)
+    return RingList(d,_rev(d))
 end
 
 function RingList(x...)
@@ -53,7 +63,7 @@ end
 
 function RingList{T}() where T
     d = Dict{T,T}()
-    return RingList(d)
+    return RingList(d,d)
 end
 
 ==(a::RingList,b::RingList) = a.data == b.data
