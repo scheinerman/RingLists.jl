@@ -30,6 +30,7 @@ In this list, `a` stands for a `RingList`.
 the elements in `a`.
 * `Set(a)` returns the elements of `a` (as an unordered collection).
 * `a[x]` returns the next element after `x` in `a`.
+* `previous(a,x)` returns the element `y` with `a[y]==x`.
 * `first(a)` returns an element of `a`; call `first(a,true)` to attempt try to
 return the smallest value held in `a`. Fails if `a` is empty.
 * `insert!(a,x)` inserts the element `a` into the `RingList`. No guarantee where it will end up.

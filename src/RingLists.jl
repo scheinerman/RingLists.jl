@@ -1,5 +1,5 @@
 module RingLists
-export RingList, insertafter!
+export RingList, insertafter!, previous
 
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
 import Base: Vector, show, hash, reverse, first, delete!, Set
@@ -39,12 +39,12 @@ function RingList(vals::Vector{T}) where T
         error("List of values may not have a repeat")
     end
     if n == 0
-        return RingList(d,_rev(d))
+        return RingList(d,d)
     end
     if n==1
         a = vals[1]
         d[a] = a
-        return RingList(d,_rev(d))
+        return RingList(d,d)
     end
     for i=1:n-1
         a = vals[i]
@@ -70,6 +70,12 @@ end
 length(a::RingList) = length(a.data)
 keys(a::RingList) = keys(a.data)
 getindex(a::RingList, x) = a.data[x]
+
+"""
+`previous(a,x)` returns the element `y` so that `a[y]==x`.
+"""
+previous(a::RingList, x) = a.revdata[x]
+
 haskey(a::RingList,x) = haskey(a.data,x)
 eltype(a::RingList{T}) where T = T
 
@@ -177,7 +183,7 @@ end
 `reverse(a::RingList)` returns a new `RingList` containing the
 same elements as `a` but in reverse order.
 """
-reverse(a::RingList) = RingList(reverse(Vector(a)))
+reverse(a::RingList{T}) where T = RingList{T}(a.revdata,a.data)
 
 Set(a::RingList{T}) where T = Set{T}(keys(a))
 
