@@ -28,8 +28,13 @@ In this list, `a` stands for a `RingList`.
 * `haskey(a,x)` checks if `x` is an element of the `RingList`.
 * `Vector(a)` returns a one-dimensional array of
 the elements in `a`.
+* `Set(a)` returns the elements of `a` (as an unordered collection).
 * `a[x]` returns the next element after `x` in `a`.
+* `first(a)` returns an element of `a`; call `first(a,true)` to attempt try to
+return the smallest value held in `a`. Fails if `a` is empty.
 * `insert!(a,x)` inserts the element `a` into the `RingList`. No guarantee where it will end up.
+* `delete!(a,x)` removes `x` from the collection linking together its
+predecessor and successor. **Note**: This is an expensive operation.
 * `insertafter!(a,x,y)` inserts `x` into `a` after `y`. For example:
 
 ```julia

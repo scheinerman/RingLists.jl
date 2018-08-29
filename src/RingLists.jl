@@ -2,7 +2,7 @@ module RingLists
 export RingList, insertafter!
 
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
-import Base: Vector, show, hash, reverse
+import Base: Vector, show, hash, reverse, first, delete!, Set
 
 struct RingList{T}
     data::Dict{T,T}
@@ -64,6 +64,23 @@ haskey(a::RingList,x) = haskey(a.data,x)
 eltype(a::RingList{T}) where T = T
 
 """
+`first(a::RingList, true_first::Bool = false)` returns
+an element of `a`. If `true_first` is `true`, then try to
+return the smallest element held in `a`.
+"""
+function first(a::RingList, true_first::Bool = false)
+    if true_first
+        try
+            x = minimum(keys(a))
+            return x
+        catch
+        end
+    end
+    return first(a.data)[1]
+end
+
+
+"""
 `insert!(a,x)` adds the element `x` into `a`.
 No guarantee where it will go. See also
 `insertafter!`
@@ -76,7 +93,7 @@ function insert!(a::RingList{T},x::T) where T
     if haskey(a,x)
         error("$x already in this RingList")
     end
-    y = first(keys(a))  # get the other elements
+    y = first(a)  # get the other elements
     if length(a) == 1
         a.data[x] = y
         a.data[y] = x
@@ -107,6 +124,25 @@ function insertafter!(a::RingList, x, y)
     nothing
 end
 
+"""
+`delete!(a,x)` removes `x` from the `RingList`.
+"""
+function delete!(a,x)
+    if !haskey(a,x)
+        error("$x not in the RingList")
+    end
+    if length(a)==1
+        delete!(a.data,x)
+        return
+    end
+
+    next = a[x]
+    prev = reverse(a)[x]
+    delete!(a.data,x)
+    a.data[prev] = next
+    return
+end
+
 
 function Vector(a::RingList{T}) where T
     n = length(a)
@@ -115,11 +151,8 @@ function Vector(a::RingList{T}) where T
     end
     K = keys(a)
     result = Vector{T}(undef,n)
-    try
-        result[1] = minimum(K)
-    catch
-        result[1] = first(K)
-    end
+
+    result[1] = first(a,true)
 
     i = 1
     while i<n
@@ -130,7 +163,14 @@ function Vector(a::RingList{T}) where T
     return result
 end
 
+"""
+`reverse(a::RingList)` returns a new `RingList` containing the
+same elements as `a` but in reverse order.
+"""
 reverse(a::RingList) = RingList(reverse(Vector(a)))
+
+Set(a::RingList{T}) where T = Set{T}(keys(a))
+
 
 
 function show(io::IO, a::RingList{T}) where T
