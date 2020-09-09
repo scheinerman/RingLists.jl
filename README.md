@@ -58,3 +58,16 @@ RingList{Int64}(1,2,3,4,5)
 julia> b = reverse(a)
 RingList{Int64}(1,5,4,3,2)
 ```
+
+
+## To do
+
+* Create an `insertbefore!` function.
+
+* Implement `iterate` so we can have code like this:
+```julia
+a = RingList(1,2,3,4)
+for t in a 
+    println(t)
+end
+```
