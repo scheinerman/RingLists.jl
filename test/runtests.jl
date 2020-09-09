@@ -40,3 +40,8 @@ insertbefore!(a,99,2)
 @test a(2)==99
 @test a[99]==2
 
+a = RingList(collect(1:9))
+@test sum(a) == sum(1:9)
+v = [x*x for x in a]
+@test sum(v) == sum(t^2 for t in 1:9)
+

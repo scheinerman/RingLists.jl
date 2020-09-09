@@ -261,5 +261,6 @@ end
 hash(a::RingList) = hash(a.data)
 hash(a::RingList, h::UInt64) = hash(a.data, h)
 
+include("iter.jl")
 
 end # module

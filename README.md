@@ -60,14 +60,20 @@ julia> b = reverse(a)
 RingList{Int64}(1,5,4,3,2)
 ```
 
+## Iteration
 
-## To do
-
-
-Implement `iterate` so we can have code like this:
+`RingList` elements can be iterated:
 ```julia
-a = RingList(1,2,3,4)
-for t in a 
-    println(t)
-end
+julia> a = RingList(1,2,3,4,5)
+RingList{Int64}(1,2,3,4,5)
+
+julia> for x in a
+       println(x)
+       end
+4
+5
+1
+2
+3
 ```
+
