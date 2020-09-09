@@ -7,7 +7,7 @@
 
 [![codecov.io](http://codecov.io/github/scheinerman/RingLists.jl/coverage.svg?branch=master)](http://codecov.io/github/scheinerman/RingLists.jl?branch=master)
 
-A `RingList` is a list of distinct values that is
+A `RingList` is a list of *distinct* values that is
 unchanged by rotation. These can be created by giving a list of values
 or a one-dimensional array of values:
 ```julia
@@ -29,8 +29,9 @@ In this list, `a` stands for a `RingList`.
 * `Vector(a)` returns a one-dimensional array of
 the elements in `a`.
 * `Set(a)` returns the elements of `a` (as an unordered collection).
-* `a[x]` returns the next element after `x` in `a`.
-* `previous(a,x)` returns the element `y` with `a[y]==x`.
+* `collect(a)` returns the elements of `a` in an ordered list. 
+* `next(a,x)` returns the next element after `x` in `a`; also `a[x]`.
+* `previous(a,x)` returns the element `y` with `a[y]==x`; also `a(y)`.
 * `first(a)` returns an element of `a`; call `first(a,true)` to attempt try to
 return the smallest value held in `a`. Fails if `a` is empty.
 * `insert!(a,x)` inserts the element `a` into the `RingList`. No guarantee where it will end up.

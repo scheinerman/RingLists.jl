@@ -19,6 +19,7 @@ insert!(a,2)
 @test Vector(a) == [1,2]
 
 a = RingList(1,2,3,4)
+@test sort(collect(a)) == [1,2,3,4]
 b = RingList(1,2,4)
 delete!(a,3)
 @test a==b

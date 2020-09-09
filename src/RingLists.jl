@@ -2,7 +2,7 @@ module RingLists
 export RingList, insertafter!, previous
 
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
-import Base: Vector, show, hash, reverse, first, delete!, Set
+import Base: Vector, show, hash, reverse, first, delete!, Set, collect, next
 
 struct RingList{T}
     data::Dict{T,T}
@@ -69,12 +69,21 @@ end
 ==(a::RingList,b::RingList) = a.data == b.data
 length(a::RingList) = length(a.data)
 keys(a::RingList) = keys(a.data)
-getindex(a::RingList, x) = a.data[x]
 
 """
-`previous(a,x)` returns the element `y` so that `a[y]==x`.
+`next(a::RingList, x)` returns the element that follows `x` in `a`,
+or throws an error if no such element exists. Abbreviation: `a[x]`.
+    See also `previous`.
+"""
+next(a::RingList,x) = a.data[x]
+getindex(a::RingList, x) = next(a,x)
+
+"""
+`previous(a,x)` returns the element `y` so that `a[y]==x`, or throws an 
+error if no such element exists. Abbreviation: `a(x)`. See also `next`.
 """
 previous(a::RingList, x) = a.revdata[x]
+(a::RingList)(x) = previous(a,x)
 
 haskey(a::RingList,x) = haskey(a.data,x)
 eltype(a::RingList{T}) where T = T
@@ -97,8 +106,9 @@ end
 
 
 """
-`insert!(a,x)` adds the element `x` into `a`.
-No guarantee where it will go. See also
+`insert!(a,x)` adds the element `x` into `a` after the 
+first element of `a` (which might not be the smallest element in `a`).
+Ergo, no guarantee where it will go. See also
 `insertafter!`
 """
 function insert!(a::RingList{T},x::T) where T
@@ -111,22 +121,7 @@ function insert!(a::RingList{T},x::T) where T
         error("$x already in this RingList")
     end
     y = first(a)  # get the other elements
-    if length(a) == 1
-        a.data[x] = y
-        a.data[y] = x
-        a.revdata[x] = y
-        a.revdata[y] = x
-        return nothing
-    end
-    # y-->z   becomes y --> x --> z
-    z = a[y]
-    a.data[y] = x
-    a.data[x] = z
-
-    a.revdata[z] = x
-    a.revdata[x] = y
-
-    nothing
+    insertafter!(a ,x, y)
 end
 
 """
@@ -195,13 +190,34 @@ function Vector(a::RingList{T}) where T
     return result
 end
 
+collect(a::RingList) = Vector(a)
+
 """
 `reverse(a::RingList)` returns a new `RingList` containing the
 same elements as `a` but in reverse order.
 """
-reverse(a::RingList{T}) where T = RingList{T}(a.revdata,a.data)
+reverse(a::RingList{T}) where T = RingList{T}(copy(a.revdata),copy(a.data))
 
+"""
+`Set(a::RingList)` returns the elements of `a` as a `Set`.
+"""
 Set(a::RingList{T}) where T = Set{T}(keys(a))
+
+
+# function collect(a::RingList{T}) where T 
+#     n = length(a)
+#     vals = Vector{T}(undef,n)
+#     if n==0 
+#         return vals
+#     end 
+#     vals[1] = first(a)
+#     i=1 
+#     while i<n 
+#         vals[i+1] = a[vals[i]]
+#         i+=1 
+#     end 
+#     return vals
+# end 
 
 
 
