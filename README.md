@@ -34,9 +34,10 @@ the elements in `a`.
 * `previous(a,x)` returns the element `y` with `a[y]==x`; also `a(y)`.
 * `first(a)` returns an element of `a`; call `first(a,true)` to attempt try to
 return the smallest value held in `a`. Fails if `a` is empty.
-* `insert!(a,x)` inserts the element `a` into the `RingList`. No guarantee where it will end up.
 * `delete!(a,x)` removes `x` from the collection linking together its
 predecessor and successor.
+* `insert!(a,x)` inserts the element `a` into the `RingList`. No guarantee where it will end up.
+* `insertbefore!(a,x,y)` inserts `x` into `a` before `y`.
 * `insertafter!(a,x,y)` inserts `x` into `a` after `y`. For example:
 
 ```julia
