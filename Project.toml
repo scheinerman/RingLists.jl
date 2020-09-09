@@ -1,7 +1,7 @@
 name = "RingLists"
 uuid = "286e9d63-9694-5540-9e3c-4e6708fa07b2"
 author = ["Ed Scheinerman <ers@jhu.edu>"]
-version = "0.2.3"
+version = "0.2.2"
 
 [compat]
 julia = "1"
