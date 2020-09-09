@@ -1,5 +1,5 @@
 module RingLists
-export RingList, insertafter!, previous, next
+export RingList, insertafter!, insertbefore!, previous, next
 
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
 import Base: Vector, show, hash, reverse, first, delete!, Set, collect
@@ -129,7 +129,7 @@ end
 """
 function insertafter!(a::RingList, x, y)
     if haskey(a, x)
-        error("Element $x alread in this RingList")
+        error("Element $x already in this RingList")
     end
     if !haskey(a, y)
         error("Element $y not in this RingList, cannot insert after")
@@ -144,6 +144,29 @@ function insertafter!(a::RingList, x, y)
 
     a.revdata[x] = y
     a.revdata[z] = x
+
+    nothing
+end
+
+"""
+`insertbefore!(a::RingList,x,y)` inserts `x` into `a` before `y`.
+"""
+function insertbefore!(a::RingList, x, y)
+    if haskey(a,x)
+        error("Element $x already in this RingList")
+    end
+    if !haskey(a, y)
+        error("Element $y not in this RingList, cannot insert before")
+    end
+    # who is currently before y?
+    z = a(y)
+    # we have z-->y 
+    # we want to change to z-->x-->y
+    a.data[z] = x
+    a.data[x] = y
+
+    a.revdata[y] = x
+    a.revdata[x] = z
 
     nothing
 end

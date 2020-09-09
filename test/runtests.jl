@@ -29,3 +29,14 @@ a = RingList(1,2,3,4)
 b = RingList(1,2,4)
 delete!(a,3)
 @test a==b
+
+a = RingList(collect(1:10))
+insertafter!(a,99,2)
+@test a[2]==99
+@test a(99)==2
+
+a = RingList(collect(1:10))
+insertbefore!(a,99,2)
+@test a(2)==99
+@test a[99]==2
+
