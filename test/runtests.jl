@@ -45,3 +45,7 @@ a = RingList(collect(1:9))
 v = [x*x for x in a]
 @test sum(v) == sum(t^2 for t in 1:9)
 
+a = RingList(3,5,1,2,4)
+b = shuffle(a)
+@test Set(a)==Set(b)
+@test sum(a) == sum(b)

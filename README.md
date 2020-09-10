@@ -30,6 +30,8 @@ In this list, `a` stands for a `RingList`.
 the elements in `a`.
 * `Set(a)` returns the elements of `a` (as an unordered collection).
 * `collect(a)` returns the elements of `a` in an ordered list. 
+* `shuffle(a)` returns a new `RingList` with the same elements as `a` but 
+in randomized order.
 * `next(a,x)` returns the next element after `x` in `a`; also `a[x]`.
 * `previous(a,x)` returns the element `y` with `a[y]==x`; also `a(y)`.
 * `first(a)` returns an element of `a`; call `first(a,true)` to attempt try to

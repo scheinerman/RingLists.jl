@@ -1,5 +1,6 @@
 module RingLists
-export RingList, insertafter!, insertbefore!, previous, next
+using Random
+export RingList, insertafter!, insertbefore!, previous, next, shuffle
 
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
 import Base: Vector, show, hash, reverse, first, delete!, Set, collect
@@ -260,6 +261,18 @@ end
 
 hash(a::RingList) = hash(a.data)
 hash(a::RingList, h::UInt64) = hash(a.data, h)
+
+"""
+`shuffle(a::RingList)` returns a new `RingList` with the same 
+elements, but in a randomized order.
+"""
+function shuffle(a::RingList)
+    n = length(a)
+    p = randperm(n)
+    d = collect(a)
+    return RingList(d[p])
+end 
+
 
 include("iter.jl")
 
