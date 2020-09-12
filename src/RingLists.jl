@@ -3,7 +3,7 @@ using Random
 export RingList, insertafter!, insertbefore!, previous, next, shuffle
 
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
-import Base: Vector, show, hash, reverse, first, delete!, Set, collect
+import Base: Vector, show, hash, reverse, first, delete!, Set, collect, copy
 
 struct RingList{T}
     data::Dict{T,T}
@@ -67,6 +67,8 @@ function RingList{T}() where {T}
     return RingList(d, d)
 end
 
+copy(a::RingList) = RingList(collect(a))
+
 ==(a::RingList, b::RingList) = a.data == b.data
 length(a::RingList) = length(a.data)
 keys(a::RingList) = keys(a.data)
@@ -80,7 +82,7 @@ next(a::RingList, x) = a.data[x]
 getindex(a::RingList, x) = next(a, x)
 
 """
-`previous(a,x)` returns the element `y` so that `a[y]==x`, or throws an 
+`previous(a::RingList,x)` returns the element `y` so that `a[y]==x`, or throws an 
 error if no such element exists. Abbreviation: `a(x)`. See also `next`.
 """
 previous(a::RingList, x) = a.revdata[x]
@@ -90,14 +92,14 @@ haskey(a::RingList, x) = haskey(a.data, x)
 eltype(a::RingList{T}) where {T} = T
 
 """
-`first(a::RingList, true_first::Bool = false)` returns
+`first(a::RingList, true_first::Bool = true)` returns
 an element of `a`. If `true_first` is `true`, then try to
 return the smallest element held in `a`.
 """
-function first(a::RingList, true_first::Bool = false)
+function first(a::RingList, true_first::Bool = true)
     if true_first
         try
-            x = minimum(keys(a))
+            x = minimum(keys(a.data))
             return x
         catch
         end
@@ -107,7 +109,7 @@ end
 
 
 """
-`insert!(a,x)` adds the element `x` into `a` after the 
+`insert!(a::RingList,x)` adds the element `x` into `a` after the 
 first element of `a` (which might not be the smallest element in `a`).
 Ergo, no guarantee where it will go. See also
 `insertafter!`
@@ -173,7 +175,7 @@ function insertbefore!(a::RingList, x, y)
 end
 
 """
-`delete!(a,x)` removes `x` from the `RingList`.
+`delete!(a::RingList,x)` removes `x` from `a`.
 """
 function delete!(a, x)
     if !haskey(a, x)
@@ -194,26 +196,11 @@ function delete!(a, x)
     return
 end
 
-
-function Vector(a::RingList{T}) where {T}
-    n = length(a)
-    if n == 0
-        return T[]
-    end
-    K = keys(a)
-    result = Vector{T}(undef, n)
-
-    result[1] = first(a, true)
-
-    i = 1
-    while i < n
-        i += 1
-        result[i] = a[result[i-1]]
-    end
-
-    return result
-end
-
+"""
+`Vector(a::RingList)` converts `a` into an ordinary list (`Vector`).
+Also: `collect(a)`.
+"""
+Vector(a::RingList) = [x for x in a]
 collect(a::RingList) = Vector(a)
 
 """
@@ -228,36 +215,7 @@ reverse(a::RingList{T}) where {T} = RingList{T}(copy(a.revdata), copy(a.data))
 Set(a::RingList{T}) where {T} = Set{T}(keys(a))
 
 
-# function collect(a::RingList{T}) where T 
-#     n = length(a)
-#     vals = Vector{T}(undef,n)
-#     if n==0 
-#         return vals
-#     end 
-#     vals[1] = first(a)
-#     i=1 
-#     while i<n 
-#         vals[i+1] = a[vals[i]]
-#         i+=1 
-#     end 
-#     return vals
-# end 
 
-
-
-function show(io::IO, a::RingList{T}) where {T}
-    v = Vector(a)
-    result = "RingList{$T}("
-    n = length(a)
-    for i = 1:n
-        result *= "$(v[i])"
-        if i < n
-            result *= ","
-        end
-    end
-    result *= ")"
-    print(io, result)
-end
 
 hash(a::RingList) = hash(a.data)
 hash(a::RingList, h::UInt64) = hash(a.data, h)
@@ -275,5 +233,6 @@ end
 
 
 include("iter.jl")
+include("show.jl")
 
 end # module
