@@ -10,7 +10,7 @@ A `RingList` is a list of *distinct* values that is
 unchanged by rotation. These can be created by giving a list of values
 or a one-dimensional array of values:
 ```julia
-ulia> using RingLists
+julia> using RingLists
 
 julia> a = RingList(1,2,3,4);
 
