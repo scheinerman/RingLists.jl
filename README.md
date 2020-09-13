@@ -10,13 +10,19 @@ A `RingList` is a list of *distinct* values that is
 unchanged by rotation. These can be created by giving a list of values
 or a one-dimensional array of values:
 ```julia
+ulia> using RingLists
+
 julia> a = RingList(1,2,3,4);
 
 julia> b = RingList([2,3,4,1]);
 
 julia> a==b
 true
+
+julia> println(a)
+[ 1 → 2 → 3 → 4 → 1 ]
 ```
+Note the repeat of element `1` in the output showing that the list wraps around.
 
 ## Functions
 
