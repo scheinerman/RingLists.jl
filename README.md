@@ -66,7 +66,8 @@ julia> b = reverse(a)
 `RingList` elements can be iterated:
 ```julia
 julia> a = RingList(1,2,3,4,5)
-[ 1 → 2 → 3 → 4 → 5 → 4 ]
+[ 1 → 2 → 3 → 4 → 5 → 1 ]
+
 julia> for x in a
        println(x)
        end
