@@ -1,5 +1,6 @@
 module RingLists
 using Random
+import Random.shuffle
 export RingList, insertafter!, insertbefore!, previous, next, shuffle
 
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
