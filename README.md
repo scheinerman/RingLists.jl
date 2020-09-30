@@ -1,7 +1,7 @@
 # RingLists
 
 
-[![Build Status](https://travis-ci.org/scheinerman/RingLists.jl.svg?branch=master)](https://travis-ci.org/scheinerman/RingLists.jl)
+[![Build Status](https://travis-ci.com/scheinerman/RingLists.jl.svg?branch=master)](https://travis-ci.com/scheinerman/RingLists.jl)
 
 [![codecov.io](http://codecov.io/github/scheinerman/RingLists.jl/coverage.svg?branch=master)](http://codecov.io/github/scheinerman/RingLists.jl?branch=master)
 
