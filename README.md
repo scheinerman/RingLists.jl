@@ -3,9 +3,6 @@
 
 [![Build Status](https://travis-ci.com/scheinerman/RingLists.jl.svg?branch=master)](https://travis-ci.com/scheinerman/RingLists.jl)
 
-[![codecov.io](http://codecov.io/github/scheinerman/RingLists.jl/coverage.svg?branch=master)](http://codecov.io/github/scheinerman/RingLists.jl?branch=master)
-
-
 A `RingList` is a list of *distinct* values that is
 unchanged by rotation. These can be created by giving a list of values
 or a one-dimensional array of values:
