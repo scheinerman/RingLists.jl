@@ -1,8 +1,7 @@
 module RingLists
 using Random
 import Random.shuffle
-export RingList, insertafter!, insertbefore!, previous, next, shuffle
-
+export RingList, insertafter!, insertbefore!, previous, next, shuffle, firsts
 import Base: ==, length, getindex, keys, haskey, insert!, eltype
 import Base: Vector, show, hash, reverse, first, delete!, Set, collect, copy
 
@@ -156,7 +155,7 @@ end
 `insertbefore!(a::RingList,x,y)` inserts `x` into `a` before `y`.
 """
 function insertbefore!(a::RingList, x, y)
-    if haskey(a,x)
+    if haskey(a, x)
         error("Element $x already in this RingList")
     end
     if !haskey(a, y)
@@ -230,7 +229,18 @@ function shuffle(a::RingList)
     p = randperm(n)
     d = collect(a)
     return RingList(d[p])
-end 
+end
+
+"""
+    firsts(R::RingList)
+
+Return a new `RingList` built by taking the `first` member 
+of each element of `R`. It is assumed that `first(x)` makes
+sense for every element of `R`.
+"""
+function firsts(R::RingList)
+    return RingList(first.(collect(R)))
+end
 
 
 include("iter.jl")
