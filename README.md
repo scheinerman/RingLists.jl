@@ -65,8 +65,7 @@ julia> b = reverse(a)
 ```
 
 * `firsts(a)` returns a new `RingList` built by taking the `first` member 
-of each element of `a`. It must be the case that `first(x)` makes sense 
-for all the elements of `a`.
+of each element of `a`.
 ```julia
 julia> a
 [ (19, 20) → (20, 25) → (25, 31) → (31, 27) → (27, 19) → (19, 20) ]

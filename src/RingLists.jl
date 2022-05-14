@@ -235,8 +235,7 @@ end
     firsts(R::RingList)
 
 Return a new `RingList` built by taking the `first` member 
-of each element of `R`. It is assumed that `first(x)` makes
-sense for every element of `R`.
+of each element of `R`. 
 """
 function firsts(R::RingList)
     return RingList(first.(collect(R)))
