@@ -177,7 +177,7 @@ end
 """
 `delete!(a::RingList,x)` removes `x` from `a`.
 """
-function delete!(a, x)
+function delete!(a::RingList, x)
     if !haskey(a, x)
         error("$x not in the RingList")
     end
